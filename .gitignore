@@ -1,0 +1,14 @@
+/.idea/
+bin/
+obj/
+/packages/
+riderModule.iml
+/_ReSharper.Caches/
+
+/.data/
+*.db
+*.db-shm
+*.db-wal
+
+.env
+*.DotSettings.user

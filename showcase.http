@@ -1,0 +1,160 @@
+### ABC Product Rating System - API Showcase
+
+@baseUrl = http://localhost:8080/api/v1
+@adminApiKey = 79ee2c60-0703-46ca-a638-24cfa63477ba
+
+### ============================================
+### STEP 1: RUN THIS FIRST TO GET IDs
+### ============================================
+### Get all products (3 pre-seeded products)
+GET {{baseUrl}}/products
+Accept: application/json
+
+### ============================================
+### STEP 2: PASTE ID HERE
+### ============================================
+### Copy any ID from the response above and paste it to the variable:
+
+@productId = 0199821e-acfe-7fb0-a3cd-c3ebe36b4287
+
+### ============================================
+### MAIN DEMO: RATING CALCULATION FLOW
+### ============================================
+
+### View current rating
+GET {{baseUrl}}/products/{{productId}}/rating
+Accept: application/json
+###
+
+### Submit feedback demonstrating calculation
+POST {{baseUrl}}/products/{{productId}}/feedbacks
+Content-Type: application/json
+
+{
+  "customerName": "Demo User",
+  "text": "The product is good in general but it has significant disadvantages like bad UX and very bad UI"
+}
+
+### View updated rating
+GET {{baseUrl}}/products/{{productId}}/rating
+Accept: application/json
+###
+
+### View all feedbacks for the product
+GET {{baseUrl}}/products/{{productId}}/feedbacks
+Accept: application/json
+###
+
+### ============================================
+### SENTIMENT TERMS MANAGEMENT (Admin Only)
+### ============================================
+
+### View current sentiment terms
+GET {{baseUrl}}/sentiment-terms
+X-Api-Key: {{adminApiKey}}
+###
+
+### Add new sentiment term (triggers rating recalculation)
+POST {{baseUrl}}/sentiment-terms
+Content-Type: application/json
+X-Api-Key: {{adminApiKey}}
+
+{
+  "term": "amazing",
+  "score": 5
+}
+
+### Try duplicate term (will fail with 409)
+POST {{baseUrl}}/sentiment-terms
+Content-Type: application/json
+X-Api-Key: {{adminApiKey}}
+
+{
+  "term": "good",
+  "score": 3
+}
+###
+
+### Try without auth (will fail with 401)
+POST {{baseUrl}}/sentiment-terms
+Content-Type: application/json
+
+{
+  "term": "fantastic",
+  "score": 5
+}
+
+### You can check an updated rating after each new feedback to check the difference
+### Overlapping terms (longest match wins)
+POST {{baseUrl}}/products/{{productId}}/feedbacks
+Content-Type: application/json
+
+{
+  "customerName": "Test User",
+  "text": "This is very bad, not just bad but terrible"
+}
+### Expected: "very bad"(1) matched once, "bad" ignored due to overlap, "terrible"(1) if added
+
+### Multiple sentiment matches
+POST {{baseUrl}}/products/{{productId}}/feedbacks
+Content-Type: application/json
+
+{
+  "customerName": "Mixed Review",
+  "text": "Excellent design, good features, but average performance and bad support"
+}
+### Expected: "excellent"(5) + "good"(4) + "average"(3) + "bad"(2) = avg 3.5
+
+### No sentiment matches (valid but no score)
+POST {{baseUrl}}/products/{{productId}}/feedbacks
+Content-Type: application/json
+
+{
+  "customerName": "Neutral User",
+  "text": "The product works as described"
+}
+###
+
+### Manual recalculation trigger
+POST {{baseUrl}}/product-ratings/recalculate-outdated
+Content-Type: application/json
+X-Api-Key: {{adminApiKey}}
+
+{
+  "batchSize": 10
+}
+### Returns 202 Accepted, processing happens asynchronously
+
+### ============================================
+### ERROR SCENARIOS
+### ============================================
+
+### Invalid product ID
+POST {{baseUrl}}/products/00000000-0000-0000-0000-000000000000/feedbacks
+Content-Type: application/json
+
+{
+  "customerName": "Error Test",
+  "text": "This should fail"
+}
+###
+
+### Invalid sentiment score (must be 1-5)
+POST {{baseUrl}}/sentiment-terms
+Content-Type: application/json
+X-Api-Key: {{adminApiKey}}
+
+{
+  "term": "invalid",
+  "score": 10
+}
+###
+
+### Empty feedback text (400 Bad Request)
+POST {{baseUrl}}/products/{{productId}}/feedbacks
+Content-Type: application/json
+
+{
+  "customerName": "Invalid User",
+  "text": ""
+}
