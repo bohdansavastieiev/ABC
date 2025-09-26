@@ -15,7 +15,7 @@ Accept: application/json
 ### ============================================
 ### Copy any ID from the response above and paste it to the variable:
 
-@productId = 0199821e-acfe-7fb0-a3cd-c3ebe36b4287
+@productId = PLACEHOLDER_VALUE
 
 ### ============================================
 ### MAIN DEMO: RATING CALCULATION FLOW
