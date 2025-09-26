@@ -38,6 +38,7 @@ API available at `http://localhost:8080` once started.
 **Setup**:
 - IDs for Entities are generated at runtime - copy the Product ID from the first GET request response to use in subsequent requests
 - Database is pre-seeded with 3 products, 5 sentiment terms, and sample feedbacks
+- `.env` file is included to make the process as straightforward as possible. Won't be there in the real project.
 
 ## Implementation Decisions
 

@@ -10,5 +10,4 @@ riderModule.iml
 *.db-shm
 *.db-wal
 
-.env
 *.DotSettings.user
