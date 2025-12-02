@@ -1,5 +1,4 @@
 ﻿using ABC.Application;
-using ABC.Application.ProductRatings.Commands.RequestRecalculation;
 using ABC.Infrastructure;
 using ABC.Worker.Consumers;
 using ABC.Worker.Services;

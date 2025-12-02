@@ -15,7 +15,7 @@ Accept: application/json
 ### ============================================
 ### Copy any ID from the response above and paste it to the variable:
 
-@productId = 0199821e-acfe-7fb0-a3cd-c3ebe36b4287
+@productId = 0199e1f2-7459-7c63-887d-e95888d3fb22
 
 ### ============================================
 ### MAIN DEMO: RATING CALCULATION FLOW

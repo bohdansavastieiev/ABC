@@ -13,7 +13,6 @@ public class RabbitMqOptions
     public int RetryCount { get; set; } = 3;
     public int RetryIntervalSeconds { get; set; } = 5;
     
-    // ADD THESE:
     public int ConcurrencyRetryLimit { get; set; } = 3;
     public int ConcurrencyRetryMinIntervalMs { get; set; } = 100;
     public int ConcurrencyRetryMaxIntervalMs { get; set; } = 1000;

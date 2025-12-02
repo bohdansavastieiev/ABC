@@ -82,7 +82,6 @@ public class ProcessNewFeedbackCommandHandler(
         productRating.Value = productRatingResult.Value.Score!.Value;
         productRating.IsOutdated = false;
         productRating.IsCalculated = true;
-        productRatingRepository.Update(productRating);
         
         await unitOfWork.SaveChangesAsync(cancellationToken);
         
